@@ -5,6 +5,7 @@ const User = new UserController;
 
 const routes = Router();
 
+routes.post('/user', User.store);
 routes.get('/user', User.index);
 
 
