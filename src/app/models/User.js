@@ -11,7 +11,6 @@ const User = new mongoose.Schema({
   },
   password_hash: {
     type: String,
-    select: false,
   },
   thumb_url: String,
   pro: Boolean,
@@ -24,7 +23,7 @@ User.virtual("password")
   .set(function(val) {
     this._password = val;
     console.log("setting: ", val);
-    this.passwordHash = "test";
+    this.password_hash = "test";
   });
 
 User.pre('save', async function (next) {
@@ -36,8 +35,12 @@ User.pre('save', async function (next) {
 })
 
 User.methods.checkPassword = async function(password) {
-  const isPasswordValid = await bcrypt.compare(password, this.password_hash);
-  return isPasswordValid;
+  try {
+    const isPasswordValid = await bcrypt.compare(password, this.password_hash);
+    return isPasswordValid;
+  } catch(e) {
+    return false
+  }
 }
 
 module.exports = mongoose.model('User', User);

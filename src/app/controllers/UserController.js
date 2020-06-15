@@ -18,8 +18,8 @@ class UserController {
       const found = await UserLib.getExistentUser(user.email);
       
       if(found) return res.status(400).json({ message: 'User already exists'})
-      const newUser = await User.create(user)
-      return res.status(200).json(newUser)
+      const { name, email } = await User.create(user)
+      return res.status(200).json({ name, email });
     } catch(e) {
       return res.status(500).json({ error: e})
     }
@@ -33,7 +33,7 @@ class UserController {
     const { email } = params;
 
     try {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email }, { password_hash: 0});
 
      return res.status(200).json(user);
 
@@ -45,7 +45,7 @@ class UserController {
 
     try {
 
-      const users = await User.find({});
+      const users = await User.find({}, { password_hash: 0 });
       
       return res.status(200).json(users);
 

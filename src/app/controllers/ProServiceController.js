@@ -6,12 +6,19 @@ const User = require('../models/User');
 class ProServiceController {
     async store(req, res) {
         const { body: proService } = req;
+
         try {
+            const hasGame = await Game.findById(body.game);
+            const hasUser = await User.findById(body.user);
+    
+            if (!hasGame) return res.status(400).json({ message: 'User not found'}); 
+            if (!hasUser) return res.status(400).json({ message: 'User not found' });
+
             const newProService = await ProService.create(proService);
 
             return res.status(200).json(newProService);
         } catch(e) {
-            return res.status(500).json({ error: e});
+            return res.status(500).json({ error: e });
         }
     }
     async index(req, res) {
