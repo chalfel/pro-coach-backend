@@ -23,7 +23,7 @@ class ProServiceController {
             return res.status(500).json({ error: e });
         }
     }
-    async find(req, res) {
+    async search(req, res) {
         const { id } = req.params;
         try {
             const proService = await ProService.findById(id);

@@ -10,13 +10,15 @@ routes.get('/user/:email', UserController.search);
 routes.delete('/user/:email', UserController.delete);
 routes.put('/user', UserController.update);
 
+routes.post('/session', SessionController.createSession);
+
+
 routes.post('/service', ProServiceController.store);
 routes.get('/service', ProServiceController.index);
 routes.get('/service/:id', ProServiceController.search);
 routes.delete('/service/:id', ProServiceController.delete);
 routes.put('/service', ProServiceController.update);
 
-routes.post('/session', SessionController.createSession);
 
 
 module.exports = routes;
