@@ -1,12 +1,22 @@
+const jwt = require('jsonwebtoken');
+const Yup = require('yup');
 const User = require('../models/User');
 const UserLib = require('../lib/UserLib');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 class SessionController {
 
   async createSession(req, res) {
-    const { email, password } = req.body;
+    const { body } = req;
+    
+    const schema = Yup.object().shape({
+      email: Yup.string().email().required(),
+      password: Yup.string().required()
+    })
+    
+    if (!(await schema.isValid(body))) return res.status(400).json({ message: "Bad Request"});
+    
+    const { email, password } = body;
+
     const user = await UserLib.getExistentUser(email);
     
     try {
@@ -16,10 +26,6 @@ class SessionController {
 
       const { _id: id, name, email, pro } = user;
       const token = jwt.sign({id, email, pro}, process.env.SECRET, { expiresIn: process.env.EXPIRE_TIME})
-      console.log(token);
-
-      console.log(jwt.decode(token));
-      
 
       return res.status(200).json({
         token,

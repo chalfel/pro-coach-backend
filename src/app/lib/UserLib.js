@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Yup = require('yup');
 
 class UserLib {
 
@@ -11,6 +12,13 @@ class UserLib {
         }
     }
 
+    validateUserEmail(params) {
+        const schema = Yup.object().shape({
+            email: Yup.string().email().required(),
+        })        
+        return schema.isValid(params)
+
+    }
 }
 
 

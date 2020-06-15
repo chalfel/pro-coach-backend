@@ -1,43 +1,66 @@
 const User = require('../models/User');
 const UserLib = require('../lib/UserLib');
+const Yup = require('yup');
+const { validateUserEmail } = require('../lib/UserLib');
 class UserController {
 
   async store(req, res) {
     try {
       const { body: user } = req
 
+      const schema = Yup.object().shape({
+        name: Yup.string().required(),
+        email: Yup.string().email().required(),
+        password: Yup.string().min(6),
+        pro: Yup.boolean().required()
+      })
+      if (!(await schema.isValid(user))) return res.status(400).json({ message: "Bad Request" });
       const found = await UserLib.getExistentUser(user.email);
       
       if(found) return res.status(400).json({ message: 'User already exists'})
       const newUser = await User.create(user)
       return res.status(200).json(newUser)
     } catch(e) {
-      console.log(e);
       return res.status(500).json({ error: e})
     }
   }
   async search(req, res) {
-    const { email } = req.params;
+    const { params } = req;
+   
+    
+    if(!(await validateUserEmail(params))) return res.status(400).json({ message: "Bad Request"});
+
+    const { email } = params;
+
     try {
       const user = await User.findOne({ email });
 
      return res.status(200).json(user);
+
     } catch(e) {
-      console.log(e);
       return res.status(500).json({ error: e })
     }
   } 
   async index(req, res) {
+
     try {
+
       const users = await User.find({});
+      
       return res.status(200).json(users);
+
     }catch(e) {
       return res.status(500).json({ error: e});
     }
 
   }
   async delete(req, res) {
-    const { email } = req.params;
+    const { params } = req;
+
+    if(!(await validateUserEmail(params))) return res.status(400).json({ message: "Bad Request"});
+
+    const { email } = params;
+
     try {
       const userFound = await UserLib.getExistentUser(email);
 
@@ -53,7 +76,13 @@ class UserController {
   }
   async update(req, res) {
     const { body: user } = req;
-    
+    const schema = Yup.object().shape({
+      name: Yup.string(),
+      email: Yup.string().email().required(),
+      password: Yup.string().min(6),
+      pro: Yup.boolean()
+    })
+    if(!(await schema.isValid(user))) return res.status(400).json({ message: "Bad Request"}); 
     try {
       const { email } = user;
       const userFound = await UserLib.getExistentUser(email);

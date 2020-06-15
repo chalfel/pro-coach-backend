@@ -13,6 +13,7 @@ const User = new mongoose.Schema({
     type: String,
     select: false,
   },
+  thumb_url: String,
   pro: Boolean,
 });
 
