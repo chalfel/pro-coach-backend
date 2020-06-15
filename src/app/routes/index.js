@@ -1,34 +1,23 @@
 const { Router } = require('express');
 const UserController = require('../controllers/UserController');
-const SessionController = require('../controllers/SessionController');
-const ProServiceController = require('../controllers/ProServiceController');
-const GameController = require('../controllers/GameController');
 const authMiddleware = require('../middleware/auth');
+const OrderRoutes = require('./Order');
+const ProServiceRoutes = require('./ProService');
+const SessionRoutes = require('./Session');
+const UserRoutes = require('./User');
+const GameRoutes = require('./Game');
+
 const routes = Router();
 
 routes.post('/user', UserController.store);
 
-routes.post('/session', SessionController.createSession);
+routes.use(SessionRoutes);
 
 routes.use(authMiddleware);
 
-routes.get('/user', UserController.index);
-routes.get('/user/:email', UserController.search);
-routes.delete('/user/:email', UserController.delete);
-routes.put('/user', UserController.update);
-
-routes.post('/service', ProServiceController.store);
-routes.get('/service', ProServiceController.index);
-routes.get('/service/:id', ProServiceController.search);
-routes.delete('/service/:id', ProServiceController.delete);
-routes.put('/service', ProServiceController.update);
-
-routes.post('/game', GameController.store);
-routes.get('/game', GameController.index);
-routes.get('/game/:id', GameController.search);
-routes.delete('/game/:id', GameController.delete);
-routes.put('/game', GameController.update);
-
-
+routes.use(OrderRoutes);
+routes.use(ProServiceRoutes);
+routes.use(UserRoutes);
+routes.use(GameRoutes);
 
 module.exports = routes;

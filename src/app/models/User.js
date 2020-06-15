@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const User = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     unique: true,
@@ -14,6 +17,7 @@ const User = new mongoose.Schema({
   },
   thumb_url: String,
   pro: Boolean,
+  services: [mongoose.ObjectId]
 });
 
 User.virtual("password")
