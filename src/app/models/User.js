@@ -22,10 +22,10 @@ const User = new mongoose.Schema({
 
 User.virtual("password")
   .get(function() {
-      return this._password;
+      return this.password;
   })
   .set(function(val) {
-    this._password = val;
+    this.password = val;
     console.log("setting: ", val);
     this.password_hash = "test";
   });

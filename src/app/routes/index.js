@@ -5,6 +5,8 @@ const ProServiceRoutes = require('./ProService');
 const SessionRoutes = require('./Session');
 const UserRoutes = require('./User');
 const GameRoutes = require('./Game');
+const FileRoutes = require('./File');
+
 
 const authMiddleware = require('../middleware/auth');
 const apiMiddleware = require('../middleware/api');
@@ -23,5 +25,6 @@ routes.use(ProServiceRoutes);
 routes.use(UserRoutes);
 routes.use(GameRoutes);
 routes.use(OrderRoutes);
+routes.use(FileRoutes);
 
 module.exports = routes;
