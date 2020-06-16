@@ -53,6 +53,7 @@ class GameController {
 
 
         const schema = Yup.object().shape({
+            _id: Yup.string().required(),
             name: Yup.string(),
             picture_url: Yup.string()
         })
@@ -62,8 +63,11 @@ class GameController {
 
         try {
             const gameFound = await Game.findById(newGame._id);
+
             if (!gameFound) return res.status(400).json({ message: 'Game not found' });
-            const updatedGame = await Game.findByIdAndUpdate(newGame.id, { ...newGame }, { new: true });
+
+            const updatedGame = await Game.findByIdAndUpdate(newGame._id, { ...newGame }, { new: true });
+
             return res.status(200).json(updatedGame);
 
         } catch(e) {
@@ -86,8 +90,8 @@ class GameController {
             const gameFound = await Game.findById(_id);
             
             if(!gameFound) return res.status(400).json({ message: 'Game not found' });
-            await gameFound.delete();
-            // await Game.deleteOne({ _id });
+            
+            await Game.deleteOne({ _id });
             return res.status(200).json({ message: 'Game was deleted' });
         } catch(e) {
             console.log(e);

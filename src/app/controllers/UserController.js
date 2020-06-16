@@ -1,7 +1,7 @@
 const User = require('../models/User');
-const UserLib = require('../lib/UserLib');
+const UserLib = require('../lib/User');
 const Yup = require('yup');
-const { validateUserEmail } = require('../lib/UserLib');
+const { validateUserEmail } = require('../lib/User');
 class UserController {
 
   async store(req, res) {
@@ -77,6 +77,7 @@ class UserController {
   async update(req, res) {
     const { body: user } = req;
     const schema = Yup.object().shape({
+      _id: Yup.string().required(),
       name: Yup.string(),
       email: Yup.string().email().required(),
       password: Yup.string().min(6),
@@ -87,7 +88,7 @@ class UserController {
       const { email } = user;
       const userFound = await UserLib.getExistentUser(email);
       if (!userFound) return res.status(400).json({ message: "User not found"})
-      const updatedUser = await User.findByIdAndUpdate(userFound.id, {...user}, { new: true});
+      const updatedUser = await User.findByIdAndUpdate(userFound._id, {...user}, { new: true});
       return res.status(200).json(updatedUser);
     } catch(e) {
       console.log(e);

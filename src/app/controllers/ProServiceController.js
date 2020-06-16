@@ -65,6 +65,7 @@ class ProServiceController {
         const { body } = req;
 
         const schema = Yup.object().shape({
+            _id: Yup.string(),
             image: Yup.string(),
             name: Yup.string(),
             description: Yup.string(),
@@ -80,7 +81,7 @@ class ProServiceController {
         
 
         try {
-            const newProService = await ProService.findByIdAndUpdate(body.id, {...body}, { new: true});
+            const newProService = await ProService.findByIdAndUpdate(body._id, {...body}, { new: true});
 
             return res.status(200).json(newProService);
 

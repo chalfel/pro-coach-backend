@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Yup = require('yup');
 const User = require('../models/User');
-const UserLib = require('../lib/UserLib');
+const UserLib = require('../lib/User');
 
 class SessionController {
 
