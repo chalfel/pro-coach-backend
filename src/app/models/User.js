@@ -22,12 +22,12 @@ const User = new mongoose.Schema({
 
 User.virtual("password")
   .get(function() {
-      return this.password;
+      return this._password;
   })
   .set(function(val) {
-    this.password = val;
+    this._password = val;
     console.log("setting: ", val);
-    this.password_hash = "test";
+    this._password_hash = "test";
   });
 
 User.pre('save', async function (next) {

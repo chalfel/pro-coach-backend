@@ -8,6 +8,6 @@ const routes = Router();
 const upload = multer(multerConfig);
 
 
-routes.post('/files', upload.single('file'), FileController.store);
+routes.post('/file', upload.single('file'), FileController.store);
 
 module.exports = routes;

@@ -44,9 +44,7 @@ class UserController {
   async index(req, res) {
 
     try {
-
       const users = await User.find({}, { password_hash: 0 });
-      
       return res.status(200).json(users);
 
     }catch(e) {
@@ -76,18 +74,22 @@ class UserController {
   }
   async update(req, res) {
     const { body: user } = req;
+
     const schema = Yup.object().shape({
       _id: Yup.string().required(),
       name: Yup.string(),
       email: Yup.string().email().required(),
       password: Yup.string().min(6),
       pro: Yup.boolean()
-    })
+    });
+
     if(!(await schema.isValid(user))) return res.status(400).json({ message: "Bad Request"}); 
+
     try {
       const { email } = user;
       const userFound = await UserLib.getExistentUser(email);
-      if (!userFound) return res.status(400).json({ message: "User not found"})
+      if (!userFound) return res.status(400).json({ message: "User not found"});
+
       const updatedUser = await User.findByIdAndUpdate(userFound._id, {...user}, { new: true});
       return res.status(200).json(updatedUser);
     } catch(e) {

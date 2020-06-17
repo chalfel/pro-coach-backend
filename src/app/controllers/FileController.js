@@ -6,14 +6,14 @@ class FileController {
 
     async store(req, res) {
         const { originalname: name, filename: path} = req.file;
-        
         try {
             const file = await File.create({
                 name,
                 path,
             });
-            return responseHandler.success(res, file);
+            return responseHandler.success(res, { url: file.url });
         } catch(e) {
+            console.log(e);
             return responseHandler.error(res, e);
         }
     }
