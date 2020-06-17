@@ -15,7 +15,7 @@ const File = new mongoose.Schema({
 File.virtual('url')
     .get(function() { return `http://localhost:3333/files/${this.path}` })
     .set(function(val) { 
-        this.url = val;
+        this._url = val;
         console.log("setting: ", val);
     });
 
