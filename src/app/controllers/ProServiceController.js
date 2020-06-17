@@ -8,10 +8,10 @@ class ProServiceController {
         const { body: proService } = req;
 
         const schema = Yup.object().shape({
-            image: Yup.string().required(),
+            image: Yup.string(),
             name: Yup.string().required(),
             description: Yup.string(),
-            user: Yup.string.required(),
+            user: Yup.string().required(),
             price: Yup.number().required(),
             rating: Yup.string(),
             active: Yup.boolean().required(),
@@ -22,16 +22,19 @@ class ProServiceController {
         if(!(await schema.isValid(proService))) return res.status(400).json({ message: 'Bad Request' });
 
         try {
-            const hasGame = await Game.findById(body.game);
-            const hasUser = await User.findById(body.user);
+            const gameFound = await Game.findById(proService.game);
+            const userFound = await User.findById(proService.user);
     
-            if (!hasGame) return res.status(400).json({ message: 'Game not found'}); 
-            if (!hasUser) return res.status(400).json({ message: 'User not found' });
+            if (!gameFound) return res.status(400).json({ message: 'Game not found'}); 
+            if (!userFound) return res.status(400).json({ message: 'User not found' });
+
+            if(!userFound.pro) return res.status(403).json({ message: 'User was not allowed' });
 
             const newProService = await ProService.create(proService);
 
             return res.status(200).json(newProService);
         } catch(e) {
+            console.log(e);
             return res.status(500).json({ error: e });
         }
     }
@@ -81,6 +84,9 @@ class ProServiceController {
         
 
         try {
+            const userFound = await User.findById(body.user);
+            if(!userFound || !userFound.pro) return res.status(400).json({ message: 'Pro player not Found' });
+
             const newProService = await ProService.findByIdAndUpdate(body._id, {...body}, { new: true});
 
             return res.status(200).json(newProService);

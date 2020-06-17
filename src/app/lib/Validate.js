@@ -1,5 +1,5 @@
 class Validate {
-    hasOne (model, id) {
+    async hasOne (model, id) {
         return model.findById(id);   
     }
 }

@@ -5,7 +5,7 @@ const ProService = require('../models/ProService');
 const responseHandler = require('../handlers/response');
 const ValidateLib = require('../lib/Validate');
 const Yup = require('yup');
-const { response } = require('express');
+const MercadoPagoGateway = require('../gateways/MercadoPagoGateway');
 
 class OrderController {
 
@@ -38,15 +38,25 @@ class OrderController {
 
             if(!proServiceFound) return responseHandler.notFound(res, 'Pro Service not found');
             
-            const userFound = await ValidateLib.hasOne(ProService, order.user);
+            const userFound = await ValidateLib.hasOne(User, order.user);
 
-            if(!userFound) return responseHandler.notFound(res, 'Pro Service not Found');
+            if(!userFound) return responseHandler.notFound(res, 'User not Found');
 
             const newOrder = await Order.create(order);
 
-            return responseHandler.success(res, newOrder);
+            const checkoutInfo = {
+                id: proServiceFound._id,
+                name: proServiceFound.name,
+                description : proServiceFound.description,
+                price: order.price,
+                email: userFound.email
+            }
+            const checkoutResult = await MercadoPagoGateway.checkout(checkoutInfo, req)
+            console.log(checkoutResult);
+            return res.redirect(`${checkoutResult.body.init_point}`);
 
         } catch(e) {
+            console.log(e);
             return responseHandler.error(res, e);
         }
     }
