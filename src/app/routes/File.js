@@ -1,13 +1,12 @@
-const { Router } = require('express');
+const { Router } = require('express')
 
-const multerConfig = require('../config/multer');
-const multer = require('multer');
-const FileController = require('../controllers/FileController');
+const multerConfig = require('../config/multer')
+const multer = require('multer')
+const FileController = require('../controllers/FileController')
 
-const routes = Router();
-const upload = multer(multerConfig);
+const routes = Router()
+const upload = multer(multerConfig)
 
+routes.post('/file', upload.single('file'), FileController.store)
 
-routes.post('/file', upload.single('file'), FileController.store);
-
-module.exports = routes;
+module.exports = routes
