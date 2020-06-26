@@ -4,9 +4,9 @@
 //     show_promise_error: true
 // }
 
-
 module.exports = {
-    access_token: 'TEST-7936020315143163-061620-1bff450ce3bff2d106cd1303956a83cd-67668745',
-    sandbox: true,
-    show_promise_error: true
+  access_token:
+    'TEST-7936020315143163-061620-1bff450ce3bff2d106cd1303956a83cd-67668745',
+  sandbox: true,
+  show_promise_error: true
 }

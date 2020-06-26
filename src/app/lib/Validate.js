@@ -1,7 +1,7 @@
 class Validate {
-    async hasOne (model, id) {
-        return model.findById(id);   
-    }
+  async hasOne(model, id) {
+    return model.findById(id)
+  }
 }
 
-module.exports = new Validate();
+module.exports = new Validate()
