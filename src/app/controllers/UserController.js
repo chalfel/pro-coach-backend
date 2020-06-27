@@ -6,16 +6,21 @@ class UserController {
   async store(req, res) {
     try {
       const { body: user } = req
-
       const schema = Yup.object().shape({
-        name: Yup.string().required(),
+        username: Yup.string().required(),
         email: Yup.string().email().required(),
         password: Yup.string().min(6),
-        pro: Yup.boolean().required()
+        confirmPassword: Yup.string().min(6),
+        imgUrl: Yup.string().nullable()
       })
       if (!(await schema.isValid(user))) {
         return res.status(400).json({ message: 'Bad Request' })
       }
+
+      if (user.password !== user.confirmPassword) {
+        return res.status(400).json({ message: "Password doesn't match" })
+      }
+
       const found = await UserLib.getExistentUser(user.email)
 
       if (found) return res.status(400).json({ message: 'User already exists' })

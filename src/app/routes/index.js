@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const UserController = require('../controllers/UserController')
+const ProServiceController = require('../controllers/ProServiceController')
 const OrderRoutes = require('./Order')
 const ProServiceRoutes = require('./ProService')
 const SessionRoutes = require('./Session')
@@ -18,6 +19,8 @@ routes.use(PaymentRoutes)
 routes.use(apiMiddleware)
 
 routes.post('/user', UserController.store)
+routes.get('/coach-service', ProServiceController.index)
+routes.get('/coach-service/:id', ProServiceController.search)
 
 routes.use(SessionRoutes)
 
