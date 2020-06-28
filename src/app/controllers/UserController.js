@@ -81,12 +81,13 @@ class UserController {
   }
 
   async update(req, res) {
-    const { body: user } = req
-
+    const { user } = req.body
     const schema = Yup.object().shape({
-      _id: Yup.string().required(),
       name: Yup.string(),
       email: Yup.string().email().required(),
+      discord: Yup.string(),
+      skype: Yup.string(),
+      username: Yup.string(),
       password: Yup.string().min(6),
       pro: Yup.boolean()
     })
@@ -96,9 +97,18 @@ class UserController {
     }
 
     try {
-      const { email } = user
+      const { email, password } = user
       const userFound = await UserLib.getExistentUser(email)
-      if (!userFound) return res.status(400).json({ message: 'User not found' })
+
+      if (!userFound) {
+        return res.status(400).json({ message: 'User not found' })
+      }
+
+      if (password) {
+        if (!userFound.checkPassword(password)) {
+          return res.status(400).json({ message: 'Incorrect password' })
+        }
+      }
 
       const updatedUser = await User.findByIdAndUpdate(
         userFound._id,
