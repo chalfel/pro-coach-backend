@@ -24,12 +24,12 @@ routes.get('/coach-service/:id', ProServiceController.search)
 
 routes.use(SessionRoutes)
 
+routes.use(FileRoutes)
 routes.use(authMiddleware)
 
 routes.use(ProServiceRoutes)
 routes.use(UserRoutes)
 routes.use(GameRoutes)
 routes.use(OrderRoutes)
-routes.use(FileRoutes)
 
 module.exports = routes
