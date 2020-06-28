@@ -24,8 +24,8 @@ class UserController {
       const found = await UserLib.getExistentUser(user.email)
 
       if (found) return res.status(400).json({ message: 'User already exists' })
-      const { name, email } = await User.create(user)
-      return res.status(200).json({ name, email })
+      const { username, email } = await User.create(user)
+      return res.status(200).json({ username, email })
     } catch (e) {
       return res.status(500).json({ error: e })
     }
