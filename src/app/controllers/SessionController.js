@@ -35,9 +35,11 @@ class SessionController {
 
       return res.status(200).json({
         token,
-        username,
-        email,
-        pro
+        user: {
+          username,
+          email,
+          pro
+        }
       })
     } catch (e) {
       console.log(e)
