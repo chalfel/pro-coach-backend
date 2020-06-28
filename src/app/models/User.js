@@ -2,24 +2,21 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
 const User = new mongoose.Schema({
-  name: {
+  name: String,
+  username: {
     type: String,
     required: true
   },
-  discord: {
-    type: String,
-    required: true
-  },
+  skype: String,
+  discord: String,
   email: {
     type: String,
     unique: true,
     index: true,
     required: true
   },
-  password_hash: {
-    type: String
-  },
-  thumb_url: String,
+  password_hash: String,
+  imgUrl: String,
   pro: Boolean,
   services: [mongoose.ObjectId]
 })
