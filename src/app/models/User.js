@@ -5,7 +5,7 @@ const User = new mongoose.Schema({
   name: String,
   username: {
     type: String,
-    username: true
+    required: true
   },
   skype: String,
   discord: String,
@@ -16,7 +16,7 @@ const User = new mongoose.Schema({
     required: true
   },
   password_hash: String,
-  img_url: String,
+  imgUrl: String,
   pro: Boolean,
   services: [mongoose.ObjectId]
 })

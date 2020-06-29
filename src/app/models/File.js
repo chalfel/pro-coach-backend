@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const UrlLib = require('../lib/Url')
 
 const File = new mongoose.Schema({
   name: {
@@ -13,8 +12,8 @@ const File = new mongoose.Schema({
 })
 
 File.virtual('url')
-  .get(function () {
-    return `${UrlLib.getFullUrl()}/files/${this.path}`
+  .get(function (req) {
+    return `${process.env.APP_URL}/files/${this.path}`
   })
   .set(function (val) {
     this._url = val

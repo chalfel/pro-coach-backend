@@ -27,17 +27,30 @@ class SessionController {
       if (!user.checkPassword(password)) {
         return res.status(400).json({ message: 'Incorrect password' })
       }
-
-      const { _id: id, name, email, pro } = user
-      const token = jwt.sign({ id, email, pro }, process.env.SECRET, {
+      const {
+        _id: id,
+        username,
+        email,
+        discord,
+        skype,
+        name,
+        pro,
+        imgUrl
+      } = user
+      const token = jwt.sign({ id, email, username, pro }, process.env.SECRET, {
         expiresIn: process.env.EXPIRE_TIME
       })
-
       return res.status(200).json({
         token,
-        name,
-        email,
-        pro
+        user: {
+          username,
+          email,
+          discord,
+          skype,
+          name,
+          pro,
+          imgUrl
+        }
       })
     } catch (e) {
       console.log(e)
