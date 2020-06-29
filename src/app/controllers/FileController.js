@@ -3,16 +3,14 @@ const responseHandler = require('../handlers/response')
 
 class FileController {
   async store(req, res) {
-    const { originalname: name, filename: path } = req.file
-
     try {
+      const { originalname: name, filename: path } = req.file
       const file = await File.create({
         name,
         path
       })
       return responseHandler.success(res, { url: file.url })
     } catch (e) {
-      console.log(e)
       return responseHandler.error(res, e)
     }
   }
