@@ -49,16 +49,17 @@ class ProServiceController {
       const { sort, limit, contains, page } = getFilterParams(query)
       let userIds = []
       let gameIds = []
+      let queryFilter = {}
       if (contains) {
         const users = await User.find(contains)
         const games = await Game.find(contains)
         userIds = users.filter((user) => user._id)
         gameIds = games.filter((game) => game._id)
-        console.log(contains)
+        queryFilter = {
+          $or: [{ user: { $in: userIds } }, { game: { $in: gameIds } }]
+        }
       }
-      const proServices = await ProService.find({
-        $or: [{ user: { $in: userIds } }, { game: { $in: gameIds } }]
-      })
+      const proServices = await ProService.find(queryFilter)
         .populate(['user', 'game'])
         .sort(sort)
         .limit(limit)
