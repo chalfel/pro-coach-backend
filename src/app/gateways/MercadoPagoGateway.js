@@ -25,7 +25,7 @@ class MercadoPagoGateway {
       auto_return: 'all',
       external_reference: JSON.stringify(checkoutInfo.orderId),
       back_urls: {
-        success: UrlLib.getFullUrl(req) + '/payment/success',
+        success: process.env.APP_URL + '/payment/success',
         pending: UrlLib.getFullUrl(req) + '/payment/pending',
         failure: UrlLib.getFullUrl(req) + '/payment/failure'
       }

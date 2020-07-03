@@ -1,6 +1,7 @@
 const ProService = require('../models/ProService')
 const Game = require('../models/Game')
 const User = require('../models/User')
+const getFilterParams = require('../lib/getFilterParams')
 const Yup = require('yup')
 
 class ProServiceController {
@@ -43,10 +44,28 @@ class ProServiceController {
   }
 
   async index(req, res) {
+    const { query } = req
     try {
-      const proServices = await ProService.find({})
+      const { sort, limit, contains, page } = getFilterParams(query)
+      let userIds = []
+      let gameIds = []
+      if (contains) {
+        const users = await User.find(contains)
+        const games = await Game.find(contains)
+        userIds = users.filter((user) => user._id)
+        gameIds = games.filter((game) => game._id)
+        console.log(contains)
+      }
+      const proServices = await ProService.find({
+        $or: [{ user: { $in: userIds } }, { game: { $in: gameIds } }]
+      })
+        .populate(['user', 'game'])
+        .sort(sort)
+        .limit(limit)
+        .skip(page)
       return res.status(200).json(proServices)
     } catch (e) {
+      console.log(e)
       return res.status(500).json({ error: e })
     }
   }

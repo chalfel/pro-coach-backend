@@ -16,7 +16,8 @@ const ProService = new mongoose.Schema({
   },
   user: {
     required: true,
-    type: mongoose.ObjectId
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   price: {
     required: true,
@@ -31,7 +32,8 @@ const ProService = new mongoose.Schema({
   },
   game: {
     required: true,
-    type: mongoose.ObjectId
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Game'
   }
 })
 
