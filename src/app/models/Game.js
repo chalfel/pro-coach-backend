@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
 const Game = new mongoose.Schema({
-  name: {
+  gameTitle: {
     type: String,
     required: true
   },
-  picture_url: {
+  imgUrl: {
     type: String,
     required: true
   }

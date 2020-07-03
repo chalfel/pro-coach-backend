@@ -59,10 +59,11 @@ class ProServiceController {
           $or: [{ user: { $in: userIds } }, { game: { $in: gameIds } }]
         }
       }
+      console.log(limit)
       const proServices = await ProService.find(queryFilter)
         .populate(['user', 'game'])
         .sort(sort)
-        .limit(limit)
+        .limit(parseInt(limit))
         .skip(page)
       return res.status(200).json(proServices)
     } catch (e) {
