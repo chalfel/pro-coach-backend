@@ -5,20 +5,27 @@ const responseHandler = require('../handlers/response')
 class PaymentController {
   async success(req, res) {
     const { query: data } = req
-
+    console.log(data)
+    console.log(req)
     try {
       const { collection_id: collectionId, external_reference: orderId } = data
       const payment = await MercadoPagoGateway.search(collectionId)
 
       if (!payment) return responseHandler.notFound(res, 'Payment not Found')
 
-      const updatedOrder = await Order.findByIdAndUpdate(
+      await Order.findByIdAndUpdate(
         JSON.parse(orderId),
-        { payment_status: 'paid' },
+        { payment_status: 'paid', payment_method: data.payment_type },
         { new: true }
       )
-
-      return responseHandler.success(res, updatedOrder)
+      const html = `
+        <html>
+          <head>
+            <title>success</title>
+          </head>
+        </html>
+      `
+      return res.status(200).send(html)
     } catch (e) {
       return responseHandler.error(res, e.message)
     }

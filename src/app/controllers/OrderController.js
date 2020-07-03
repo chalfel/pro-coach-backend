@@ -20,14 +20,13 @@ class OrderController {
 
   async store(req, res) {
     const { body: order } = req
-
+    console.log(order)
     const schema = Yup.object().shape({
       user: Yup.string().required(),
       proService: Yup.string().required(),
       price: Yup.number().required(),
-      payment_method: Yup.string().required(),
-      payment_status: Yup.string().required(),
-      status: Yup.string().required()
+      payment_method: Yup.string(),
+      payment_status: Yup.string()
     })
 
     if (!(await schema.isValid(order))) return responseHandler.badRequest(res)
@@ -60,7 +59,7 @@ class OrderController {
         checkoutInfo,
         req
       )
-      return res.redirect(`${checkoutResult.body.init_point}`)
+      return res.status(200).json({ uri: `${checkoutResult.body.init_point}` })
     } catch (e) {
       console.log(e)
       return responseHandler.error(res, e)
