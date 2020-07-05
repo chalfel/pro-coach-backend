@@ -61,7 +61,8 @@ class ProServiceController {
       }
       console.log(limit)
       const proServices = await ProService.find(queryFilter)
-        .populate(['user', 'game'])
+        .populate('user', '-password_hash')
+        .populate('game')
         .sort(sort)
         .limit(parseInt(limit))
         .skip(page)
