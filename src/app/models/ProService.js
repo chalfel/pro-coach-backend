@@ -16,14 +16,15 @@ const ProService = new mongoose.Schema({
   },
   user: {
     required: true,
-    type: mongoose.ObjectId
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   price: {
     required: true,
     type: Number
   },
   rating: {
-    type: String
+    type: Number
   },
   active: Boolean,
   comments: {
@@ -31,7 +32,8 @@ const ProService = new mongoose.Schema({
   },
   game: {
     required: true,
-    type: mongoose.ObjectId
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Game'
   }
 })
 

@@ -14,16 +14,15 @@ const Order = new mongoose.Schema({
     required: true
   },
   payment_method: {
-    type: String,
-    required: true
+    type: String
   },
   payment_status: {
     type: String,
-    required: true
+    default: 'pending'
   },
   status: {
     type: String,
-    required: true
+    default: 'pending'
   },
   created_at: {
     type: Date,
