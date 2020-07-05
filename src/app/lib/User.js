@@ -2,7 +2,7 @@ const User = require('../models/User')
 const Yup = require('yup')
 
 class UserLib {
-  async getExistentUser(email) {
+  async getExistentUser(email, noPassword) {
     try {
       const user = await User.findOne({ email })
       return user

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const Yup = require('yup')
-// const User = require('../models/User')
+const responseHandler = require('../handlers/response')
 const UserLib = require('../lib/User')
 
 class SessionController {
@@ -55,6 +55,22 @@ class SessionController {
     } catch (e) {
       console.log(e)
       return res.status(500).json({ error: e })
+    }
+  }
+
+  async restoreSession(req, res) {
+    const { authorization } = req.headers
+    try {
+      const token = authorization.split('authorization ')[1]
+      const { email } = await jwt.decode(token)
+      const userFound = await UserLib.getExistentUser(email)
+      if (!userFound) {
+        return responseHandler.notFound(res, { message: 'User not found' })
+      }
+      userFound.password_hash = undefined
+      return responseHandler.success(res, userFound)
+    } catch (e) {
+      return responseHandler.error(res, e)
     }
   }
 }

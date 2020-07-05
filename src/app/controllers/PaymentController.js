@@ -5,8 +5,6 @@ const responseHandler = require('../handlers/response')
 class PaymentController {
   async success(req, res) {
     const { query: data } = req
-    console.log(data)
-    console.log(req)
     try {
       const { collection_id: collectionId, external_reference: orderId } = data
       const payment = await MercadoPagoGateway.search(collectionId)
