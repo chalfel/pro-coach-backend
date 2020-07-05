@@ -3,6 +3,6 @@ const SessionController = require('../controllers/SessionController')
 
 const routes = Router()
 
-routes.post('/session', SessionController.createSession)
+routes.get('/session', SessionController.restoreSession)
 
 module.exports = routes

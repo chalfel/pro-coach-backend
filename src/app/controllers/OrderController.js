@@ -20,7 +20,6 @@ class OrderController {
 
   async store(req, res) {
     const { body: order } = req
-    console.log(order)
     const schema = Yup.object().shape({
       user: Yup.string().required(),
       proService: Yup.string().required(),

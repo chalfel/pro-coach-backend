@@ -1,6 +1,5 @@
 module.exports = (query) => {
   const { sort, limit, contains, page } = query
-  console.log(query)
   const filters = {}
   if (sort) {
     filters.sort = getSortParams(sort)
@@ -38,7 +37,7 @@ const getContainsParams = (contains) => {
     const [containsOption, containsItem] = contains.slice(1)
     return [
       ...previous,
-      { [containsOption]: { $regex: `.*${containsItem}.*` } }
+      { [containsOption]: { $regex: `.*${containsItem}.*`, $options: 'i' } }
     ]
   }, [])
   return { $or: containsObj }
