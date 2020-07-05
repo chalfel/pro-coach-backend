@@ -59,7 +59,6 @@ class ProServiceController {
           $or: [{ user: { $in: userIds } }, { game: { $in: gameIds } }]
         }
       }
-      console.log(limit)
       const proServices = await ProService.find(queryFilter)
         .populate('user', '-password_hash')
         .populate('game')
