@@ -60,9 +60,15 @@ class SessionController {
 
   async restoreSession(req, res) {
     const { authorization } = req.headers
+    console.log(authorization)
     try {
-      const token = authorization.split('authorization ')[1]
+      const token = authorization.split('Bearer ')[1]
       const { email } = await jwt.decode(token)
+      if (!email) {
+        return responseHandler.badRequest(res, {
+          message: 'Email was not provided'
+        })
+      }
       const userFound = await UserLib.getExistentUser(email)
       if (!userFound) {
         return responseHandler.notFound(res, { message: 'User not found' })
@@ -70,6 +76,7 @@ class SessionController {
       userFound.password_hash = undefined
       return responseHandler.success(res, userFound)
     } catch (e) {
+      console.log(e)
       return responseHandler.error(res, e)
     }
   }
