@@ -54,6 +54,11 @@ class OrderController {
         price: order.price,
         email: userFound.email
       }
+      if (!userFound.services) {
+        userFound.services = []
+      }
+      userFound.services.push(newOrder.id)
+      userFound.save()
       const checkoutResult = await MercadoPagoGateway.checkout(
         checkoutInfo,
         req
