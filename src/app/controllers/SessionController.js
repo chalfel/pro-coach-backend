@@ -59,10 +59,12 @@ class SessionController {
   }
 
   async restoreSession(req, res) {
-    const { authorization } = req.headers
+    const { authorization, Authorization } = req.headers
     console.log(authorization)
     try {
-      const token = authorization.split('Bearer ')[1]
+      const token = Authorization
+        ? Authorization.split('Bearer')[1]
+        : authorization.split('Bearer ')[1]
       const { email } = await jwt.decode(token)
       if (!email) {
         return responseHandler.badRequest(res, {
