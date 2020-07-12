@@ -60,7 +60,6 @@ class SessionController {
 
   async restoreSession(req, res) {
     const { authorization } = req.headers
-    console.log(authorization)
     try {
       const token = authorization.split('Bearer ')[1]
       const { email } = await jwt.decode(token)
