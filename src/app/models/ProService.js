@@ -26,7 +26,10 @@ const ProService = new mongoose.Schema({
   rating: {
     type: Number
   },
-  active: Boolean,
+  active: {
+    type: Boolean,
+    default: true
+  },
   comments: {
     type: [String]
   },

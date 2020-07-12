@@ -15,7 +15,7 @@ class ProServiceController {
       user: Yup.string().required(),
       price: Yup.number().required(),
       rating: Yup.string(),
-      active: Yup.boolean().required(),
+      active: Yup.boolean(),
       comments: Yup.array(),
       game: Yup.string().required()
     })
